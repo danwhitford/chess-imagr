@@ -9,6 +9,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"log"
 )
 
 func fileNameWithoutExtTrimSuffix(fileName string) string {
@@ -18,13 +19,12 @@ func fileNameWithoutExtTrimSuffix(fileName string) string {
 func writeImage(fname string, position *chess.Position) {
 	f, err := os.Create(fname)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	defer f.Close()
 
-	// write board SVG to file
 	if err := image.SVG(f, position.Board()); err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 }
 
@@ -36,20 +36,22 @@ func main() {
 
 	os.Mkdir(*output, 0755)
 	matching, _ := filepath.Glob(*glob)
+	log.Printf("Found matching input files: %s", matching)
 	for _, v := range matching {
+		log.Printf("Parsing input file: %s", v)
 		pgnReader, err := os.Open(v)
 		if err != nil {
-			panic(err)
+			log.Panic(err)
 		}
 		pgn, err := chess.PGN(pgnReader)
 		if err != nil {
-			panic(err)
+			log.Panic(err)
 		}
 		game := chess.NewGame(pgn)
-		for i, pos := range game.Positions() {
+		for i, pos := range game.Positions() {			
 			fname := fmt.Sprintf("%s/%s_%d.svg", *output, fileNameWithoutExtTrimSuffix(v), i)
+			log.Printf("Writing move %d of %s to %s", i, v, fname)
 			writeImage(fname, pos)
 		}
 	}
-
 }
