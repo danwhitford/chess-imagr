@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"github.com/notnil/chess"
 	"github.com/notnil/chess/image"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
-	"log"
 )
 
 func fileNameWithoutExtTrimSuffix(fileName string) string {
@@ -29,7 +29,7 @@ func writeImage(fname string, position *chess.Position) {
 }
 
 func main() {
-	
+
 	glob := flag.String("glob", "*.pgn", "Glob for input files")
 	output := flag.String("output", "out", "Directory to output images")
 	flag.Parse()
@@ -48,7 +48,7 @@ func main() {
 			log.Panic(err)
 		}
 		game := chess.NewGame(pgn)
-		for i, pos := range game.Positions() {			
+		for i, pos := range game.Positions() {
 			fname := fmt.Sprintf("%s/%s_%d.svg", *output, fileNameWithoutExtTrimSuffix(v), i)
 			log.Printf("Writing move %d of %s to %s", i, v, fname)
 			writeImage(fname, pos)
