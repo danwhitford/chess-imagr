@@ -16,7 +16,6 @@ func fileNameWithoutExtTrimSuffix(fileName string) string {
 }
 
 func writeImage(fname string, position *chess.Position) {
-	fmt.Println(fname)
 	f, err := os.Create(fname)
 	if err != nil {
 		panic(err)
@@ -35,9 +34,9 @@ func main() {
 	output := flag.String("output", "out", "Directory to output images")
 	flag.Parse()
 
+	os.Mkdir(*output, 0755)
 	matching, _ := filepath.Glob(*glob)
 	for _, v := range matching {
-		fmt.Println(v)
 		pgnReader, err := os.Open(v)
 		if err != nil {
 			panic(err)
@@ -50,9 +49,7 @@ func main() {
 		for i, pos := range game.Positions() {
 			fname := fmt.Sprintf("%s/%s_%d.svg", *output, fileNameWithoutExtTrimSuffix(v), i)
 			writeImage(fname, pos)
-			// fmt.Println(pos.Board().Draw())
 		}
 	}
 
-	os.Mkdir(*output, 0755)
 }
