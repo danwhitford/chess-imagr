@@ -1,5 +1,9 @@
 # Chess Imagr
 
+CLI tool to generate SVG images of chess games from PGN files.
+
+Mainly a wrapper around the excellent <https://github.com/notnil/chess>
+
 ```
 Usage of chess-imagr:
   -glob string
