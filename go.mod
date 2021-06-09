@@ -1,4 +1,4 @@
-module github.com/shatoe44/chess-imagr
+module github.com/shaftoe44/chess-imagr
 
 go 1.15
 
